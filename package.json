@@ -1,16 +1,9 @@
 {
   "version": "2.2.5",
   "scripts": {
-    "serve": "vite --mode production",
-    "web": "vite --mode production",
-    "start": "node server.js",
-    "build": "vite build --mode production",
-    "test": "vue-cli-service test:unit --watchAll",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
-    "build-test": "vite build --mode dev",
-    "format": "prettier -w .",
-    "dev": "vite --mode test",
-    "postinstall": "npm run build --prod"
+    "serve": "node server.js",
+    "web": "node server.js",
+    "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.18.2",
