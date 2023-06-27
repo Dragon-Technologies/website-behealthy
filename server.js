@@ -10,10 +10,9 @@ const publicDirectoryPath = path.join(__dirname, 'public');
 // Configura o Express para servir os arquivos estáticos
 app.use(express.static(publicDirectoryPath));
 
-// Define a rota para servir o arquivo HTML
-app.get('/', (req, res) => {
-  res.sendFile(path.join(publicDirectoryPath, 'default.html'));
-});
+// Adiciona o middleware para o corpo da requisição
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Define a rota de envio de email
 const transporter = nodemailer.createTransport({
@@ -58,6 +57,10 @@ app.post('/sendmail', (req, res) => {
   }
 });
 
+// Define a rota para servir o arquivo HTML
+app.get('/', (req, res) => {
+  res.sendFile(path.join(publicDirectoryPath, 'default.html'));
+});
 
 // Inicia o servidor
 const port = process.env.PORT || 3000;
