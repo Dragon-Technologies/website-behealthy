@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const nodemailer = require('nodemailer');
+const mailgun = require('mailgun-js');
 
 const app = express();
 
@@ -14,20 +14,17 @@ app.use(express.static(publicDirectoryPath));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Define a rota de envio de email
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'behealthy.ict@gmail.com',
-    pass: 'Inov@10!',
-  },
+// Configura as credenciais do Mailgun
+const mg = mailgun({
+  apiKey: '5b5ce321fd9fd6e8e1bd8e3b2577c834-e5475b88-c3206da3',
+  domain: 'sandbox4800335e7efc4c628ec3690f46e3a99c.mailgun.org',
 });
 
 app.post('/sendmail', (req, res) => {
   // Verifica se os campos foram preenchidos
   if (req.body.name && req.body.surname && req.body.email && req.body.message && req.body.company) {
     // Cria o conteúdo do email
-    const mailOptions = {
+    const data = {
       from: 'behealthy.ict@gmail.com',
       to: 'behealthy.ict@gmail.com',
       subject: 'Novo formulário de contato',
@@ -43,12 +40,12 @@ app.post('/sendmail', (req, res) => {
     };
 
     // Envia o email
-    transporter.sendMail(mailOptions, (error, info) => {
+    mg.messages().send(data, (error, body) => {
       if (error) {
         console.log(error);
         res.status(500).json({ error: 'Ocorreu um erro ao enviar o email.' });
       } else {
-        console.log('Email enviado:', info.response);
+        console.log('Email enviado:', body);
         res.status(200).json({ message: 'Email enviado com sucesso!' });
       }
     });
