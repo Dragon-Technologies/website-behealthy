@@ -29,7 +29,7 @@ app.post('/sendmail', (req, res) => {
   // Verifica se os campos foram preenchidos
   if (req.body.name && req.body.surname && req.body.email && req.body.message && req.body.company) {
     // Cria o conteúdo do email
-    const data = {
+    const mailOptions = {
       from: 'faleconosco@behealthy-ict.org',
       to: 'faleconosco@behealthy-ict.org',
       subject: 'Novo formulário de contato',
