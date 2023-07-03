@@ -25,8 +25,8 @@ app.post('/sendmail', (req, res) => {
   if (req.body.name && req.body.surname && req.body.email && req.body.message && req.body.company) {
     // Cria o conteúdo do email
     const data = {
-      from: 'behealthy.ict@gmail.com',
-      to: 'behealthy.ict@gmail.com',
+      from: 'faleconosco@behealthy-ict.org',
+      to: 'faleconosco@behealthy-ict.org',
       subject: 'Novo formulário de contato',
       html: `
         <h2>Novo formulário de contato</h2>
