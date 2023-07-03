@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const mailgun = require('mailgun-js');
+const nodemailer = require('nodemailer');
 
 const app = express();
 
@@ -14,10 +14,15 @@ app.use(express.static(publicDirectoryPath));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Configura as credenciais do Mailgun
-const mg = mailgun({
-  apiKey: '5b5ce321fd9fd6e8e1bd8e3b2577c834-e5475b88-c3206da3',
-  domain: 'sandbox4800335e7efc4c628ec3690f46e3a99c.mailgun.org',
+// Configura as credenciais do servidor SMTP
+const transporter = nodemailer.createTransport({
+  host: 'smtpout.secureserver.net', // substitua pelo seu host SMTP
+  port: 465, // substitua pela porta SMTP do seu host
+  secure: true, // defina como true se estiver usando SSL/TLS
+  auth: {
+    user: 'faleconosco@behealthy-ict.org', // substitua pelo seu endereço de e-mail
+    pass: 'Rod7974700@', // substitua pela sua senha
+  },
 });
 
 app.post('/sendmail', (req, res) => {
@@ -40,12 +45,12 @@ app.post('/sendmail', (req, res) => {
     };
 
     // Envia o email
-    mg.messages().send(data, (error, body) => {
+    transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.log(error);
         res.status(500).json({ error: 'Ocorreu um erro ao enviar o email.' });
       } else {
-        console.log('Email enviado:', body);
+        console.log('Email enviado:', info.response);
         res.status(200).json({ message: 'Email enviado com sucesso!' });
       }
     });
